@@ -1,22 +1,31 @@
 import React from 'react';
 
 function Navegacion({ toggleFormulario, toggleListCarritos, mostrarFormulario, mostrarListCarritos }) {
-  
-  return (
-    <nav className="navbar navbar-light bg-light">
-      <div className="d-flex ml-auto">
-        <button className={`btn btn-primary`} onClick={toggleFormulario}>
-          {mostrarFormulario ? 'Ocultar' : 'Crear'}
-        </button>
+  const navbarHeight = "80px"; // Ajusta la altura según la altura de tu barra de navegación
 
-        <button
-          className={`btn ${mostrarListCarritos ? 'btn-light' : 'btn-primary'}`}
-          onClick={toggleListCarritos}
-        >
-          {mostrarListCarritos ? '🛒' : '🛒'}
-        </button>
+  return (
+    <>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div className="container">
+          <button className={`btn btn-primary`} onClick={toggleFormulario}>
+            {mostrarFormulario ? 'Ocultar' : 'Crear'}
+          </button>
+
+          <button
+            className={`btn ${mostrarListCarritos ? 'btn-light' : 'btn-primary'}`}
+            onClick={toggleListCarritos}
+          >
+            {mostrarListCarritos ? '🛒' : '🛒'}
+          </button>
+
+          {/* Agrega botones adicionales según sea necesario */}
+        </div>
+      </nav>
+      <div style={{ marginTop: navbarHeight }}>
+        {/* Contenido principal */}
+        {/* Agrega tus títulos y contenido aquí */}
       </div>
-    </nav>
+    </>
   );
 }
 

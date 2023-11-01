@@ -11,7 +11,7 @@ function Carrito(props) {
     <div>
       <div className="alert alert-info p-0" role="alert">
         <img width="50px" src={value.foto} />
-        <small>{value.Titulo}</small>
+        <small>{value.titulo}</small>
       </div>
       <button onClick={handleEliminar}>🗑︎</button>
     </div>
