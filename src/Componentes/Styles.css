@@ -1,0 +1,7 @@
+.custom-card {
+    width: 0%; /* Ajusta el ancho de las tarjetas según tus necesidades */
+    margin: 1%; /* Ajusta el margen entre las tarjetas según tus necesidades */
+    border: 1px solid #ccc; /* Añade bordes, sombras u otros estilos según sea necesario */
+    border-radius: 10px;
+    box-shadow: 0 1px 1px rgba(227, 7, 7, 0.1);
+  }

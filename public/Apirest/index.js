@@ -29,10 +29,10 @@ app.get('/productos', (req, res) => {
 
 // Ruta para crear un nuevo producto
 app.post('/CrearProductos', (req, res) => {
-    const { titulo, precio, descripcion, foto } = req.body;
+    const { titulo, precio, descripcion, marca, color, recomendado, estado, foto } = req.body;
 
     // Validación básica de los datos (puedes agregar más validaciones según tus necesidades)
-    if (!titulo || !precio || !descripcion || !foto ) {
+    if (!titulo || !precio || !descripcion || !marca || !color || !recomendado || !estado || !foto ) {
         return res.status(400).json({ message: 'Faltan campos obligatorios' });
     }
 
@@ -40,8 +40,8 @@ app.post('/CrearProductos', (req, res) => {
     const connection = mysql.createConnection(credenciales);
 
     // Inserta el nuevo producto en la base de datos
-    const sql = 'INSERT INTO productos (titulo, precio, descripcion, foto) VALUES (?, ?, ?, ?)';
-    const values = [titulo, precio, descripcion, foto]; // Corrección de los nombres de variables
+    const sql = 'INSERT INTO productos (titulo, precio, descripcion, marca, color, recomendado, estado, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    const values = [titulo, precio, descripcion, marca, color, recomendado, estado, foto]; // Corrección de los nombres de variables
 
     connection.query(sql, values, (err, result) => {
         if (err) {
@@ -119,6 +119,64 @@ app.delete('/eliminarProducto/:id', (req, res) => {
     });
 
     // Cierra la conexión a la base de datos
+    connection.end();
+});
+
+app.put('/actualizarProducto/:id', (req, res) => {
+    const productoId = req.params.id;
+    const { titulo, precio, descripcion, marca, color, recomendado, estado, foto} = req.body;
+
+    if (!productoId) {
+        return res.status(400).json({ message: 'ID de producto no proporcionado' });
+    }
+
+    if (!titulo || !precio || !descripcion || !marca || !color || !recomendado || !estado || !foto) {
+        return res.status(400).json({ message: 'Faltan campos obligatorios' });
+    }
+
+    const connection = mysql.createConnection(credenciales);
+
+    const sql = 'UPDATE productos SET titulo = ?, precio = ?, descripcion = ?, marca = ?, color = ?, recomendado = ?, estado = ?, foto = ? WHERE id = ?';
+    const values = [titulo, precio, descripcion,marca, color, recomendado, estado, foto, productoId];
+
+    connection.query(sql, values, (err, result) => {
+        if (err) {
+            console.error('Error al actualizar el producto:', err);
+            return res.status(500).json({ message: 'Error al actualizar el producto' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Producto no encontrado' });
+        }
+
+        res.json({ message: 'Producto actualizado con éxito' });
+    });
+
+    connection.end();
+});
+
+app.get('/obtenerProducto/:id', (req, res) => {
+    const productoId = req.params.id;
+
+    const connection = mysql.createConnection(credenciales);
+
+    const sql = 'SELECT * FROM productos WHERE id = ?';
+    const values = [productoId];
+
+    connection.query(sql, values, (err, result) => {
+        if (err) {
+            console.error('Error al obtener el producto:', err);
+            return res.status(500).json({ message: 'Error al obtener el producto' });
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json({ message: 'Producto no encontrado' });
+        }
+
+        const producto = result[0];
+        res.json(producto);
+    });
+
     connection.end();
 });
 
